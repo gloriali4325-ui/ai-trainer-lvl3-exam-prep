@@ -139,7 +139,7 @@ class _CategoryPracticeScreenState extends State<CategoryPracticeScreen> with Wi
           throw StateError('No questions restored for category ${widget.categoryId}');
         }
 
-        final safeIndex = currentIndex.clamp(0, restoredQuestions.length - 1) as int;
+        final safeIndex = currentIndex.clamp(0, restoredQuestions.length - 1);
         
         setState(() {
           _questions = restoredQuestions;

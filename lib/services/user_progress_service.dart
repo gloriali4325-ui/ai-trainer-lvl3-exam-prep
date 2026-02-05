@@ -361,7 +361,7 @@ class UserProgressService extends ChangeNotifier {
     
     try {
       final prefs = await SharedPreferences.getInstance();
-      final key = '${_drillingProgressKey}state_${effectiveUserId}';
+      final key = '${_drillingProgressKey}state_$effectiveUserId';
       final jsonString = prefs.getString(key);
 
       if (jsonString == null) {
@@ -417,7 +417,7 @@ class UserProgressService extends ChangeNotifier {
     
     try {
       final prefs = await SharedPreferences.getInstance();
-      final key = '${_operationalDrillingProgressKey}state_${effectiveUserId}';
+      final key = '${_operationalDrillingProgressKey}state_$effectiveUserId';
       final jsonString = prefs.getString(key);
 
       if (jsonString == null) {

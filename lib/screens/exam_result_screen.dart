@@ -114,7 +114,7 @@ class ExamResultScreen extends StatelessWidget {
                           _ResultRow(
                             icon: Icons.timer,
                             label: '耗时',
-                            value: '${minutes} 分 ${seconds} 秒',
+                            value: '$minutes 分 $seconds 秒',
                           ),
                         ],
                       ),

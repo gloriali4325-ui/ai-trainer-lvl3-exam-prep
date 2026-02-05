@@ -206,5 +206,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
 }
 extension on double {
   Widget get verticalSpace => SizedBox(height: this);
-  Widget get horizontalSpace => SizedBox(width: this);
 }

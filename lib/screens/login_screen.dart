@@ -148,5 +148,4 @@ class _LoginScreenState extends State<LoginScreen> {
 }
 extension on double {
   Widget get verticalSpace => SizedBox(height: this);
-  Widget get horizontalSpace => SizedBox(width: this);
 }

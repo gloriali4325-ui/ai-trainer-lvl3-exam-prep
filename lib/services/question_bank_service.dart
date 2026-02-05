@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:uuid/uuid.dart';
 import 'package:ai_coach/models/question.dart';
 import 'package:ai_coach/models/category.dart' as cat;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -143,8 +142,8 @@ class QuestionBankService extends ChangeNotifier {
       final hasMultiple = hasMultipleChoice[name] == true;
 
       if (hasSingle && hasMultiple) {
-        final singleId = '${baseId}-single';
-        categoryIdByName['${name}-single'] = singleId;
+        final singleId = '$baseId-single';
+        categoryIdByName['$name-single'] = singleId;
         allCategories.add(cat.Category(
           id: singleId,
           name: '$name - 单选题',
@@ -154,8 +153,8 @@ class QuestionBankService extends ChangeNotifier {
           updatedAt: now,
         ));
 
-        final multipleId = '${baseId}-multiple';
-        categoryIdByName['${name}-multiple'] = multipleId;
+        final multipleId = '$baseId-multiple';
+        categoryIdByName['$name-multiple'] = multipleId;
         allCategories.add(cat.Category(
           id: multipleId,
           name: '$name - 多选题',
@@ -188,9 +187,9 @@ class QuestionBankService extends ChangeNotifier {
       String categoryId;
       if (hasSingle && hasMultiple) {
         if (qType == QuestionType.singleChoice) {
-          categoryId = categoryIdByName['${categoryName}-single'] ?? _slugify('${categoryName}-single');
+          categoryId = categoryIdByName['$categoryName-single'] ?? _slugify('$categoryName-single');
         } else if (qType == QuestionType.multipleChoice) {
-          categoryId = categoryIdByName['${categoryName}-multiple'] ?? _slugify('${categoryName}-multiple');
+          categoryId = categoryIdByName['$categoryName-multiple'] ?? _slugify('$categoryName-multiple');
         } else {
           categoryId = categoryIdByName[categoryName] ?? _slugify(categoryName);
         }
@@ -349,8 +348,8 @@ class QuestionBankService extends ChangeNotifier {
         // Otherwise create the base category
         if (hasSingleChoice && hasMultipleChoice) {
           // Only create sub-categories, not the base category
-          final singleId = '${baseId}-single';
-          categoryIdByName['${name}-single'] = singleId;
+          final singleId = '$baseId-single';
+          categoryIdByName['$name-single'] = singleId;
           allCategories.add(cat.Category(
             id: singleId,
             name: '$name - 单选题',
@@ -360,8 +359,8 @@ class QuestionBankService extends ChangeNotifier {
             updatedAt: now,
           ));
           
-          final multipleId = '${baseId}-multiple';
-          categoryIdByName['${name}-multiple'] = multipleId;
+          final multipleId = '$baseId-multiple';
+          categoryIdByName['$name-multiple'] = multipleId;
           allCategories.add(cat.Category(
             id: multipleId,
             name: '$name - 多选题',
@@ -411,9 +410,9 @@ class QuestionBankService extends ChangeNotifier {
         // Determine category ID based on question type
         String categoryId;
         if (qType == QuestionType.singleChoice) {
-          categoryId = categoryIdByName['${categoryName}-single'] ?? _slugify('${categoryName}-single');
+          categoryId = categoryIdByName['$categoryName-single'] ?? _slugify('$categoryName-single');
         } else if (qType == QuestionType.multipleChoice) {
-          categoryId = categoryIdByName['${categoryName}-multiple'] ?? _slugify('${categoryName}-multiple');
+          categoryId = categoryIdByName['$categoryName-multiple'] ?? _slugify('$categoryName-multiple');
         } else {
           categoryId = categoryIdByName[categoryName] ?? _slugify(categoryName);
         }

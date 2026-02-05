@@ -28,7 +28,7 @@ class _MockExamScreenState extends State<MockExamScreen> {
   List<Question> _trueFalseList = [];
   List<Question> _singleChoiceList = [];
   List<Question> _multipleChoiceList = [];
-  Map<String, dynamic> _answers = {};
+  final Map<String, dynamic> _answers = {};
   Timer? _timer;
   int _remainingSeconds = _examDurationMinutes * 60;
   bool _examStarted = false;
@@ -671,7 +671,7 @@ class _MockExamScreenState extends State<MockExamScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '已答: ${answeredCount}/${allQuestions.length}',
+              '已答: $answeredCount/${allQuestions.length}',
               style: context.textStyles.labelSmall,
             ),
             Text(

@@ -339,7 +339,7 @@ class MistakeNotebookService extends ChangeNotifier {
         'answered_at': answeredAt.toIso8601String(),
       }).select('id');
 
-      if (response is List && response.isNotEmpty) {
+      if (response.isNotEmpty) {
         return response.first['id']?.toString();
       }
     } catch (e) {
