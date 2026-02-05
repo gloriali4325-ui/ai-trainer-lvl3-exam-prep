@@ -1,0 +1,21 @@
+# Build
+build/
+
+# Dart / Flutter
+.dart_tool/
+.packages
+.pub-cache/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Mac
+.DS_Store
+
+# Env
+.env
+.env.*

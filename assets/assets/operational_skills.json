@@ -1,0 +1,67 @@
+[
+  {
+  "id": "op_001",
+  "category": "患者数据分析",
+  "title": "智能医疗系统中的业务数据处理流程设计",
+  "question": "某医疗机构计划引入智能医疗系统，以提升诊断效率和准确性。通过分析患者的历史数据，使用机器学习算法预测患者的健康风险，从而辅助医生进行诊断和治疗。为此，该机构需要设计一套全面的业务数据处理流程，确保数据处理的高效性和准确性，为人工智能模型提供可靠的输入数据。\n\n我们提供一个患者数据集（patient_data.csv），包含以下字段：\n- PatientID: 患者ID\n- Age: 年龄\n- BMI: 体重指数\n- BloodPressure: 血压\n- Cholesterol: 胆固醇水平\n- DaysInHospital: 住院天数\n\n你作为人工智能训练师，根据提供的数据集和Python代码框架（1.1.1.ipynb），完成以下数据的统计和分析，为智能医疗系统提供可靠的数据支持：\n\n（1）补全并运行Python代码，分别统计住院天数超过7天的患者数量及其占比。住院天数超过7天定义为高风险患者，反之为低风险患者。将统计结果截图保存为JPG，命名为“1.1.1-1”。\n\n（2）补全并运行Python代码，统计不同BMI区间中高风险患者的比例，并统计不同BMI区间中的患者数。BMI区间：偏瘦（<18.5），正常（18.5～23.9），超重（24.0～27.9），肥胖（≥28.0）。将统计结果截图保存为JPG，命名为“1.1.1-2”。\n\n（3）补全并运行Python代码，统计不同年龄区间中高风险患者的比例，并统计不同年龄区间中的患者数。年龄区间：≤25岁，26-35岁，36-45岁，46-55岁，56-65岁，＞65岁。将统计结果截图保存为JPG，命名为“1.1.1-3”。\n\n所有结果文件储存在桌面新建的考生文件夹中，文件夹命名为“准考证号+身份证号后六位”。\n\n请完成以下代码中的空白处（用_____________表示）：",  "dataFiles": ["patient_data.csv"],  "codeTemplate": "import pandas as pd\nimport numpy as np\n\n# 读取数据集 1分\ndata = _____________\n\n# 1. 统计住院天数超过7天的患者数量及其占比\n# 创建新列'RiskLevel'，根据住院天数判断风险等级 3分\n_____________ = _____________(_____________, '高风险患者', '低风险患者')\n# 统计不同风险等级的患者数量 2分\nrisk_counts = data_____________._____________\n# 计算高风险患者占比 1分\nhigh_risk_ratio = risk_counts['高风险患者'] / _____________\n# 计算低风险患者占比 1分\nlow_risk_ratio = risk_counts['低风险患者'] / _____________\n\n# 输出结果\nprint(\"高风险患者数量:\", risk_counts['高风险患者'])\nprint(\"低风险患者数量:\", risk_counts['低风险患者'])\nprint(\"高风险患者占比:\", high_risk_ratio)\nprint(\"低风险患者占比:\", low_risk_ratio)\n\n# 2. 统计不同BMI区间中高风险患者的比例和统计不同BMI区间中的患者数\n# 定义BMI区间和标签\nbmi_bins = [0, 18.5, 24, 28, np.inf]\nbmi_labels = ['偏瘦', '正常', '超重', '肥胖']\n# 根据BMI值划分指定区间 4分\ndata['BMIRange'] = _____________(_____________, _____________, _____________, right=False)\n# 计算每个BMI区间中高风险患者的比例 2分\nbmi_risk_rate = _____________(_____________)['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())\n# 统计每个BMI区间的患者数量 1分\nbmi_patient_count = data_____________\n\n# 输出结果\nprint(\"BMI区间中高风险患者的比例和患者数:\")\nprint(bmi_risk_rate)\nprint(bmi_patient_count)\n\n# 3. 统计不同年龄区间中高风险患者的比例和统计不同年龄区间中的患者数\n# 定义年龄区间和标签\nage_bins = [0, 26, 36, 46, 56, 66, np.inf]\nage_labels = ['≤25岁', '26-35岁', '36-45岁', '46-55岁', '56-65岁', '＞65岁']\n# 根据年龄值划分指定区间 4分\ndata['AgeRange'] = _____________(_____________, _____________, _____________, right=False)\n# 计算每个年龄区间中高风险患者的比例 2分\nage_risk_rate = _____________(_____________)['RiskLevel'].apply(lambda x: (x == '高风险患者').mean())\n# 统计每个年龄区间的患者数量 1分\nage_patient_count = data_____________\n\n# 输出结果\nprint(\"年龄区间中高风险患者的比例和患者数:\")\nprint(age_risk_rate)\nprint(age_patient_count)",
+  "correctCode": "import pandas as pd\nimport numpy as np\n\n# 读取数据集 1分\ndata = pd.read_csv('patient_data.csv')\n\n# 1. 统计住院天数超过7天的患者数量及其占比\ndata['RiskLevel'] = np.where(data['DaysInHospital'] > 7, '高风险患者', '低风险患者')\nrisk_counts = data['RiskLevel'].value_counts()\nhigh_risk_ratio = risk_counts.get('高风险患者', 0) / len(data)\nlow_risk_ratio = risk_counts.get('低风险患者', 0) / len(data)\n\nprint(\"高风险患者数量:\", risk_counts.get('高风险患者', 0))\nprint(\"低风险患者数量:\", risk_counts.get('低风险患者', 0))\nprint(\"高风险患者占比:\", high_risk_ratio)\nprint(\"低风险患者占比:\", low_risk_ratio)\n\n# 2. 统计不同BMI区间中高风险患者的比例和统计不同BMI区间中的患者数\nbmi_bins = [0, 18.5, 24.0, 28.0, np.inf]\nbmi_labels = ['偏瘦', '正常', '超重', '肥胖']\n\ndata['BMIRange'] = pd.cut(data['BMI'], bins=bmi_bins, labels=bmi_labels, right=False)\n\nbmi_risk_rate = data.groupby('BMIRange', observed=False)['RiskLevel'] \\\n    .apply(lambda x: (x == '高风险患者').mean())\nbmi_patient_count = data['BMIRange'].value_counts().sort_index()\n\nprint(\"BMI区间中高风险患者的比例和患者数:\")\nprint(bmi_risk_rate)\nprint(bmi_patient_count)\n\n# 3. 统计不同年龄区间中高风险患者的比例和统计不同年龄区间中的患者数\nage_bins = [0, 26, 36, 46, 56, 66, np.inf]\nage_labels = ['≤25岁', '26-35岁', '36-45岁', '46-55岁', '56-65岁', '＞65岁']\n\ndata['AgeRange'] = pd.cut(data['Age'], bins=age_bins, labels=age_labels, right=False)\n\nage_risk_rate = data.groupby('AgeRange', observed=False)['RiskLevel'] \\\n    .apply(lambda x: (x == '高风险患者').mean())\nage_patient_count = data['AgeRange'].value_counts().sort_index()\n\nprint(\"年龄区间中高风险患者的比例和患者数:\")\nprint(age_risk_rate)\nprint(age_patient_count)",
+  "correctKeywords": [
+    "pd.read_csv",
+    "np.where",
+    "DaysInHospital",
+    "RiskLevel",
+    "value_counts",
+    "len(data)",
+    "pd.cut",
+    "BMI",
+    "BMIRange",
+    "groupby",
+    "Age",
+    "AgeRange",
+    "sort_index"
+  ],
+  "explanation": "本题考查人工智能训练师在医疗数据分析中的基础数据处理能力。通过pd.read_csv读取数据集，使用np.where基于住院天数创建风险等级字段，利用value_counts统计人数并计算占比。随后通过pd.cut对BMI和年龄进行区间划分，结合groupby与自定义函数计算各区间高风险患者比例，并统计区间患者数量。整个流程体现了数据清洗、特征构造与统计分析在智能医疗系统中的典型应用。",
+  "points": 30,
+  "difficulty": "中等",
+  "timeLimit": 30
+}
+,
+{
+  "id": "op_002",
+  "category": "传感器数据分析",
+  "title": "智能农业系统中的数据采集与处理流程设计",
+  "question": "某农业公司计划引入智能农业系统，通过安装在农田中的各种传感器（如温度传感器、湿度传感器、土壤传感器等）实时监控农田环境，收集数据并进行分析，以优化作物管理和提高产量。为此，公司需要设计并实现一套数据采集和处理流程，确保数据的高效采集、传输和处理，为智能分析提供可靠的数据支持。\n\n我们提供一个传感器数据集（sensor_data.csv），包含以下字段：\n- SensorID: 传感器ID\n- Timestamp: 时间戳\n- SensorType: 传感器类型（Temperature温度, Humidity湿度, SoilMoisture土壤水分, SoilPH土壤酸碱度, Light光传感器）\n- Value: 传感器读数\n- Location: 传感器安装位置\n\n你作为智能农业系统的人工智能训练师，根据提供的sensor_data.csv数据集和Python代码框架（1.1.2.ipynb），完成以下数据的采集和处理任务，为智能农业系统提供可靠的数据支持。请按照以下要求完成任务，确保结果准确并保存相应的截图。\n\n（1）传感器数据统计：\n通过补全并运行Python代码（1.1.2.ipynb）分别统计每种传感器的数据数量和平均值。将上述统计结果截图以JPG的格式保存，命名为“1.1.2-1”。\n\n（2）按位置统计温度和湿度数据：\n通过补全并运行Python代码（1.1.2.ipynb）统计每个位置的温度和湿度传感器数据的平均值。将上述统计结果截图以JPG的格式保存，命名为“1.1.2-2”。\n\n（3）数据清洗和异常值处理：\n通过补全并运行Python代码（1.1.2.ipynb）对数据进行清洗，处理异常值。具体要求如下：\n- 将明显异常的温度（< -10 或 > 50）和湿度（< 0 或 > 100）数据进行标记并统计。\n- 对缺失值使用前面数据的值（如果前面值没有采用后面数据的值）进行填补。\n- 将清洗后的数据保存为新文件cleaned_sensor_data.csv。\n\n所有结果文件储存在桌面新建的考生文件夹中，文件夹命名为“准考证号+身份证号后六位”。\n\n3.技能要求\n（1）能结合人工智能技术要求和业务特征，设计整套业务数据采集流程\n（2）能结合人工智能技术要求和业务特征，设计整套业务数据处理流程\n\n4.质量指标\n（1）设计出的业务数据底层逻辑清晰，有效合理。\n（2）数据完整性：每个传感器数据记录数应完整，缺失值尽量少。\n（3）数据准确性：传感器数据应合理，与参考数据偏差小。\n\n请完成以下代码中的空白处（用_____________表示）：",
+  "codeTemplate": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# 读取数据集 2分\ndata = _____________\n\n# 1. 传感器数据统计\n# 对传感器类型进行分组，并计算每个组的数据数量和平均值 3分\nsensor_stats = _____________(_____________)['Value']._____________\n# 输出结果\nprint(\"传感器数据数量和平均值:\")\nprint(sensor_stats)\n\n# 2. 按位置统计温度和湿度数据\n# 筛选出温度和湿度数据，然后按位置和传感器类型分组，计算每个组的平均值 2分\nlocation_stats = data[data['SensorType']._____________]._____________['Value'].mean().unstack()\n# 输出结果\nprint(\"每个位置的温度和湿度数据平均值:\")\nprint(location_stats)\n\n# 3. 数据清洗和异常值处理\n# 标记异常值 3分\ndata['is_abnormal'] = _____________(\n    ((_____________) & ((data['Value'] < -10) | (data['Value'] > 50))) |\n    ((_____________) & ((data['Value'] < 0) | (data['Value'] > 100))),\n    True, False\n)\n# 输出异常值数量 2分\nprint(\"异常值数量:\", data['is_abnormal']._____________)\n# 填补缺失值\n# 使用前向填充和后向填充的方法填补缺失值 4分\ndata['Value']._____________(_____________, inplace=True)\ndata['Value']._____________(_____________, inplace=True)\n# 保存清洗后的数据\n# 删除用于标记异常值的列，并将清洗后的数据保存到新的CSV文件中 4分\ncleaned_data = _____________(_____________=['is_abnormal'])\n_____________('cleaned_sensor_data.csv', _____________)\nprint(\"数据清洗完成，已保存为 'cleaned_sensor_data.csv'\")",
+  "dataFiles": ["sensor_data.csv"],
+  "correctCode": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# 读取数据集 2分\ndata = pd.read_csv('sensor_data.csv')\n\n# 1. 传感器数据统计\n# 对传感器类型进行分组，并计算每个组的数据数量和平均值 3分\nsensor_stats = data.groupby('SensorType')['Value'].agg(['count', 'mean'])\n# 输出结果\nprint(\"传感器数据数量和平均值:\")\nprint(sensor_stats)\n\n# 2. 按位置统计温度和湿度数据\n# 筛选出温度和湿度数据，然后按位置和传感器类型分组，计算每个组的平均值 2分\nlocation_stats = (\n    data[data['SensorType'].isin(['Temperature', 'Humidity'])]\n    .groupby(['Location', 'SensorType'])['Value']\n    .mean()\n    .unstack()\n)\n# 输出结果\nprint(\"每个位置的温度和湿度数据平均值:\")\nprint(location_stats)\n\n# 3. 数据清洗和异常值处理\n# 标记异常值 3分\ndata['is_abnormal'] = np.where(\n    ((data['SensorType'] == 'Temperature') & ((data['Value'] < -10) | (data['Value'] > 50))) |\n    ((data['SensorType'] == 'Humidity') & ((data['Value'] < 0) | (data['Value'] > 100))),\n    True, False\n)\n# 输出异常值数量 2分\nprint(\"异常值数量:\", data['is_abnormal'].sum())\n\n# 填补缺失值\n# 使用前向填充和后向填充的方法填补缺失值 4分\ndata['Value'].fillna(method='ffill', inplace=True)\ndata['Value'].fillna(method='bfill', inplace=True)\n\n# 保存清洗后的数据\n# 删除用于标记异常值的列，并将清洗后的数据保存到新的CSV文件中 4分\ncleaned_data = data.drop(columns=['is_abnormal'])\ncleaned_data.to_csv('cleaned_sensor_data.csv', index=False)\nprint(\"数据清洗完成，已保存为 'cleaned_sensor_data.csv'\")",
+  "correctKeywords": [
+    "pd.read_csv",
+    "sensor_data.csv",
+    "groupby",
+    "SensorType",
+    "Value",
+    "agg",
+    "count",
+    "mean",
+    "isin",
+    "Location",
+    "unstack",
+    "np.where",
+    "Temperature",
+    "Humidity",
+    "is_abnormal",
+    "sum",
+    "fillna",
+    "ffill",
+    "bfill",
+    "drop",
+    "to_csv",
+    "index=False"
+  ],
+  "explanation": "本题考查智能农业场景下的传感器数据采集与处理能力：\n（1）使用groupby按SensorType分组，对Value字段进行count与mean聚合，得到各类传感器数据量与平均值。\n（2）使用isin筛选温度与湿度数据，再按Location与SensorType分组求均值，并通过unstack转成宽表便于查看。\n（3）按业务规则标记异常值（温度<-10或>50，湿度<0或>100）并统计数量；对Value缺失值采用前向填充后向填充；最后删除标记列并导出cleaned_sensor_data.csv，为后续智能分析提供更可靠的数据输入。",
+  "points": 30,
+  "difficulty": "中等",
+  "timeLimit": 30
+}
+
+]
