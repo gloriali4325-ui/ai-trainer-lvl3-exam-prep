@@ -1,0 +1,43 @@
+name: ai_coach
+description: "Prepare to conquer the AI Trainer (Level 3) exam with this dynamic app, offering comprehensive theoretical knowledge and hands-on operational skill practice through interactive drills, mock exams, and a personalized mistake notebook."
+publish_to: "none"
+version: 1.0.0
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.1.0
+  provider: ^6.1.2
+  go_router: ^16.2.0
+  shared_preferences: ^2.0.0
+  uuid: ^4.0.0
+  intl: 0.20.2
+  js: ^0.6.7
+  supabase_flutter: ^2.8.0
+  flutter_dotenv: ^5.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/ai_trainer_bank_v2.json
+    - assets/operational_skills.json
+    - assets/operational_skills/1.1.1/1.1.1.ipynb
+    - assets/operational_skills/1.1.1/patient_data.csv
+    - assets/operational_skills/1.1.2/sensor_data.csv
+    - .env
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/icons/dreamflow_icon.jpg
+  remove_alpha_ios: true
