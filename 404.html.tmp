@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/ai-trainer-lvl3-exam-prep/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="ai_coach">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>ai_coach</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+  <script>
+    let pyodideReadyPromise = null;
+
+    function getPyodide() {
+      if (!pyodideReadyPromise) {
+        pyodideReadyPromise = loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"
+        });
+      }
+      return pyodideReadyPromise;
+    }
+
+    async function runPythonCode(code, csvManifestJson) {
+      const pyodide = await getPyodide();
+      await pyodide.loadPackage(["numpy", "pandas"]);
+
+      let output = "";
+      pyodide.setStdout({ batched: (s) => { output += s; } });
+      pyodide.setStderr({ batched: (s) => { output += s; } });
+
+      if (csvManifestJson) {
+        try {
+          const manifest = JSON.parse(csvManifestJson);
+          if (Array.isArray(manifest)) {
+            for (const entry of manifest) {
+              const name = entry.name;
+              const urls = Array.isArray(entry.urls) ? entry.urls : [];
+              let loaded = false;
+              for (const url of urls) {
+                try {
+                  const response = await fetch(url);
+                  if (!response.ok) continue;
+                  const data = new Uint8Array(await response.arrayBuffer());
+                  pyodide.FS.writeFile(`/tmp/${name}`, data);
+                  loaded = true;
+                  break;
+                } catch (_) {
+                  // continue trying other urls
+                }
+              }
+              if (!loaded) {
+                output += `未找到CSV资源: ${name}\n`;
+              }
+            }
+            code = "import os\nos.chdir('/tmp')\n" + code;
+          }
+        } catch (e) {
+          output += `CSV清单解析失败: ${e.toString()}\n`;
+        }
+      }
+
+      try {
+        await pyodide.runPythonAsync(code);
+      } catch (error) {
+        output += error.toString();
+      }
+      return output || "(无输出)";
+    }
+
+    async function runPythonCodeWithCallback(code, csvManifestJson, callback) {
+      const result = await runPythonCode(code, csvManifestJson);
+      callback(result);
+    }
+  </script>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
